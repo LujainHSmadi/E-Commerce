@@ -6,15 +6,8 @@ $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cat_name = $_POST['cat_name'];
     $cat_desc = $_POST['cat_desc'];
-    $cat_image = $_FILES['cat_image']['name'];
-    // $cat_image_tmp_name = $_FILES['cat_image']['tmp_name'];
-    // $cat_image_size = $_FILES['cat_image']['tmp_name'];
-    // $cat_image_folder = 'images/'.$cat_name;
-    // $imgExtension = strtolower(pathinfo(
-    //          $cat_image, PATHINFO_EXTENSION));
-    // $valid_extension = array("png", "jpeg", "jpg");
-    // $picProfile = rand(1000,1000000);
 
+    
     if (empty($cat_name)) {
         $errors[] = 'Product title is required';
 
@@ -22,19 +15,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($cat_desc)) {
         $errors[] = 'Description is required';
 
-    } 
-    if(empty($errors)) {
+    }
+    if (!is_dir('images')) {
+        mkdir('images');
+    }
+    if (empty($errors)) {
+        $image = $_FILES['image'] ?? null;
+        $imagePath = '';
+        if ($image) {
+            $imagePath = 'images/' . randomString(8) . '/' . $image['name'];
+            mkdir(dirname($imagePath));
+            move_uploaded_file($image['tmp_name'], $imagePath);
+        }
 
         $query = "INSERT INTO `category` (`category_id`, `category_name`, `category_img`, `category_des`)
     VALUES (NULL, :name, :image, :desc)";
 
         $statment = $conn->prepare($query);
         $statment->bindValue(':name', $cat_name);
-        $statment->bindValue(':image', '');
+        $statment->bindValue(':image', $imagePath);
         $statment->bindValue(':desc', $cat_desc);
         $statment->execute();
+
+        header('Location:index.php');
     }
 }
+
+function randomString($n)
+{
+    $str = '';
+    $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for ($i = 0; $i < $n; $i++) {
+        $index = rand(0, strlen($characters) - 1);
+        $str .= $characters[$index];
+    }
+    return $str;
+}
+
 ?>
 
 
@@ -66,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <br>
             <div class="custom-file">
                     <br>
-                    <input type="file" class="custom-file-input" id="customFile" name="cat_image">
+                    <input type="file" class="custom-file-input" id="customFile" name="image">
                     <label class="custom-file-label" for="customFile">Choose file</label>
                 </div>
 
