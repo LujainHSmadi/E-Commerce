@@ -24,6 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $subcat_name = $_POST['subcat_name'];
     $subcat_desc = $_POST['subcat_desc'];
+    $category_id = $_POST['categoryid'];
+
     $image = $_FILES['image'] ?? null;
     $imagePath = '';
     if (!is_dir('images')) {
@@ -51,13 +53,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $query = "UPDATE `subcategory`
     SET `subcategory_name`=:name,
     `subcategory_img`= :image,
-    `subcategory_des`= :desc
+    `subcategory_des`= :desc,
+    `category_id` = :category
     WHERE `subcategory_id` = :id";
 
             $statment = $conn->prepare($query);
             $statment->bindValue(':name', $subcat_name);
             $statment->bindValue(':image', $imagePath);
             $statment->bindValue(':desc', $subcat_desc);
+            $statment->bindValue(':category', $category_id);
             $statment->bindValue(':id', $id);
             $statment->execute();
 
@@ -119,11 +123,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="exampleFormControlTextarea1">Description </label>
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="subcat_desc" ><?php echo $subcategory['subcategory_des'] ?></textarea>
             </div>
+
+                <?php
+
+                $sql = "SELECT * FROM `category`";
+
+                $sta = $conn->prepare($sql);
+                $sta->execute();
+                $publish = $sta->fetchAll();
+
+                ?>
+
+            <select name="categoryid" require>
+                <option value="no">select Category</option>
+                <?php foreach ($publish as $value): ?>
+                <option value="<?php echo $value['category_id']; ?>"><?php echo $value['category_name']; ?></option>
+            <?php endforeach?>
+                </select>
+
+             <br><br>
+             <br><br>
+
             <button type="submit" class="btn btn-primary" name="add_product">update</button>
             <br><br>
-            <select class="form-control">
-                <option>select Category</option>
-            </select>
+
+
       <form>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

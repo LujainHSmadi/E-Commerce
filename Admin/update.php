@@ -127,9 +127,7 @@ if(empty($errors)){
             </div>
             <button type="submit" class="btn btn-primary" name="add_product">update</button>
             <br><br>
-            <select class="form-control">
-                <option>select Category</option>
-            </select>
+            
       <form>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
