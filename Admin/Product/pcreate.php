@@ -1,7 +1,6 @@
 <?php
 
-
-include '../includes/connect.php';
+@include '../includes/connect.php';
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -102,19 +101,19 @@ function randomString($n)
 
               <?php
 
-                $sql = "SELECT * FROM `subcategory`";
+$sql = "SELECT * FROM `subcategory`";
 
-                $sta = $conn->prepare($sql);
-                $sta->execute();
-                $publish = $sta->fetchAll();
+$sta = $conn->prepare($sql);
+$sta->execute();
+$publish = $sta->fetchAll();
 
-              ?>
+?>
 
             <select name="subcategoryid" require>
                 <option value="no">select Sub-category</option>
                 <?php foreach ($publish as $value): ?>
                 <option value="<?php echo $value['subcategory_id']; ?>"><?php echo $value['subcategory_name']; ?></option>
-                <?php endforeach; ?>
+                <?php endforeach;?>
                 </select>
 
              <br><br>

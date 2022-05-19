@@ -39,13 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Description is required';
 
     }
+if( $category_id =='no'){
+    $errors[] = 'category is required';
 
+}
     if ($image) {
 
-        // if ($subcategory['subcategory_img']) {
-        //     // unlink("subcategory/".$subcategory['subcategory_img']);
-
-        // }
+       
         $imagePath = 'images/' . $image['name'];
         move_uploaded_file($image['tmp_name'], $imagePath);
 

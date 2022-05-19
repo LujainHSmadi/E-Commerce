@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $product_name = $_POST['product_name'];
     $product_desc = $_POST['product_desc'];
+    $product_price = $_POST['product_price'];
     $subcategory_id = $_POST['subcategoryid'];
 
     $image = $_FILES['image'] ?? null;
@@ -40,18 +41,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     }
 
+    if ($category_id == 'no') {
+        $errors[] = 'category is required';
+
+    }
+
     if ($image) {
 
-        // if ($product['product_img']) {
-        //     // unlink("product/".$product['product_img']);
-
-        // }
         $imagePath = 'images/' . $image['name'];
         move_uploaded_file($image['tmp_name'], $imagePath);
 
         if (empty($errors)) {
-            $query = "UPDATE `product` 
-            SET `product_id`= NULL,
+            $query = "UPDATE `product`
+            SET
             `product_name`=:name,
             `product_price`=:price,
             `product_img`=:image,
@@ -115,6 +117,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <input class="form-control" type="text" placeholder="Add Categorry" name="product_name" value = "<?php echo $product['product_name'] ?>">
             <br>
+            <input class="form-control" type="number" step="0.01" placeholder="Price" name="product_price" value = "<?php echo $product['product_price'] ?>>
+
+            <br>
             <div class="custom-file">
                     <br>
                     <input type="file" class="form-control-file" id="customFile" name="image" value = "<?php echo $product['product_img'] ?>">
@@ -129,12 +134,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <?php
 
-                    $sql = "SELECT * FROM `subcategory`";
+$sql = "SELECT * FROM `subcategory`";
 
-                    $sta = $conn->prepare($sql);
-                    $sta->execute();
-                    $publish = $sta->fetchAll();
-                ?>
+$sta = $conn->prepare($sql);
+$sta->execute();
+$publish = $sta->fetchAll();
+?>
 
             <select name="subcategoryid" require>
                 <option value="no">select subcategory</option>
