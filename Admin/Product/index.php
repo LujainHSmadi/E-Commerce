@@ -1,8 +1,8 @@
 <?php
-@include 'includes/connect.php';
-$satement = $conn->prepare('SELECT * FROM `category` ORDER BY category_id DESC');
+@include '../includes/connect.php';
+$satement = $conn->prepare('SELECT * FROM `product` ORDER BY product_id DESC');
 $satement->execute();
-$categories = $satement->fetchAll(PDO::FETCH_ASSOC);
+$products = $satement->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -18,32 +18,38 @@ $categories = $satement->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
-      <h1>Category CRUD</h1>
+      <h1>Product CRUD</h1>
       <table class="table">
           <p>
-         <a href="create.php" class="btn btn-success">GO Back to Products </a>
+         <a href="pcreate.php" class="btn btn-success">Create Product</a>
        </p>
           <thead>
               <tr>
                   <th scope ="col">#</th>
                   <th scope ="col">Image</th>
-                  <th scope ="col">name</th>
+                  <th scope ="col">Name</th>
+                  <th scope ="col">Price</th>
                   <th scope ="col">Description</th>
                   <th scope ="col">Action</th>
               </tr>
           </thead>
           <tbody>
-              <?php foreach ($categories as $i => $category): ?>
+              <?php foreach ($products as $i => $product): ?>
               <tr>
                   <th scope = "row"><?php echo $i + 1; ?></th>
-                  <td><?php echo "<img src=" . $category["category_img"] . " width=100px height=100px>" ?></td>
-                  <td><?php echo $category["category_name"] ?></td>
-                  <td><?php echo $category["category_des"] ?></td>
-                  <td> <a class="btn btn-outline-primary" href="update.php?id=<?php echo $category['category_id'] ?>">Edit</a>
-                  <form style ="display:inline-block" action="delete.php" method="post">
-                      <input type="hidden" name="id" value="<?php echo $category['category_id'] ?>">
-                      <button type="submit" class="btn btn-outline-danger" href="delete?=<?php echo $category['category_id'] ?>" >Delete</button> </td>
-                  </form>     
+                  <td><?php echo "<img src=" . $product["product_img"] . " width=100px height=100px>" ?></td>
+                  <td><?php echo $product["product_name"] ?></td>
+                  <td><?php echo $product["product_price"] ?></td>
+                  <td><?php echo $product["product_des"] ?></td>
+                  <td> <a class="btn btn-outline-primary" href="pupdate.php?id=<?php echo $product['product_id'] ?>">Edit</a>
+                  <form style ="display:inline-block" action="pdelete.php" method="post">
+                     <input type="hidden" name="id" value="<?php echo $product['product_id'] ?>">
+
+                      <button type="submit" class="btn btn-outline-danger" href="delete?=<?php echo $product['product_id'] ?>" >Delete</button> </td>
+
+
+
+                  </form>
 
 
               </tr>
