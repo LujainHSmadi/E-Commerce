@@ -1,20 +1,22 @@
 <?php
 
-@include 'includes/connect.php';
+include '../includes/connect.php';
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subcategory_name = $_POST['subcategory_name'];
-    $subcategory_img = $_POST['subcategory_img'];
     $subcategory_des = $_POST['subcategory_des'];
-    $category_id = $_POST['category_id'];
-
+    $category_id = $_POST['categoryid'];
     if (empty($subcategory_name)) {
         $errors[] = 'Product title is required';
 
     }
     if (empty($subcategory_des)) {
         $errors[] = 'Description is required';
+
+    }
+    if ($category_id == "no") {
+        $errors[] = 'Category is required';
 
     }
     if (!is_dir('images')) {
@@ -39,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $statment->bindValue(':cat_id', $category_id);
         $statment->execute();
 
-        header('Location:index.php');
+        // header('Location:index.php');
     }
 }
 
@@ -70,7 +72,7 @@ function randomString($n)
   </head>
   <body>
       <!-- categories -->
-      <h1>Create New Category</h1>
+      <h1>Create New Sub-Category</h1>
       <?php if (!empty($errors)): ?>
 
             <div class="alert alert-danger">
@@ -80,8 +82,8 @@ function randomString($n)
             </div>
            <?php endif?>
       <br>
-      <form action="create.php" method="post" enctype="multipart/form-data">
-            <input class="form-control" type="text" placeholder="Add Categorry" name="subcategory_name" ">
+      <form action="" method="post" enctype="multipart/form-data">
+            <input class="form-control" type="text" placeholder="Add Sub-Categorry" name="subcategory_name" ">
             <br>
             <div class="custom-file">
                     <br>
@@ -93,13 +95,28 @@ function randomString($n)
                 <label for="exampleFormControlTextarea1">Description </label>
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="subcategory_des" ></textarea>
             </div>
-            <select class="form-control">
-                <option>select Category</option>
-            </select>
-             <br><br>
-            <button type="submit" class="btn btn-primary" name="add_product">Add</button>
-            <br><br>
 
+              <?php
+
+$sql = "SELECT * FROM `category`";
+
+$sta = $conn->prepare($sql);
+$sta->execute();
+$publish = $sta->fetchAll();
+
+?>
+
+            <select name="categoryid" require>
+                <option value="no">select Category</option>
+                <?php foreach ($publish as $value): ?>
+                <option value="<?php echo $value['category_id']; ?>"><?php echo $value['category_name']; ?></option>
+            <?php endforeach?>
+                </select>
+
+             <br><br>
+             <br><br>
+
+             <button type="submit" class="btn btn-primary" name="add_product">Add</button>
       <form>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

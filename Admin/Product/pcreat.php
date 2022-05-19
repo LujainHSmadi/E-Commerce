@@ -70,7 +70,7 @@ function randomString($n)
   </head>
   <body>
       <!-- categories -->
-      <h1>Create New Category</h1>
+      <h1>Create New Sub_category</h1>
       <?php if (!empty($errors)): ?>
 
             <div class="alert alert-danger">
@@ -81,7 +81,7 @@ function randomString($n)
            <?php endif?>
       <br>
       <form action="create.php" method="post" enctype="multipart/form-data">
-            <input class="form-control" type="text" placeholder="Add Categorry" name="subcategory_name" ">
+            <input class="form-control" type="text" placeholder="Add Categorry" name="subcategory_name" >
             <br>
             <div class="custom-file">
                     <br>
@@ -94,6 +94,24 @@ function randomString($n)
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="subcategory_des" ></textarea>
             </div>
             <select class="form-control">
+                <?php
+
+            $sql = "SELECT * FROM category WHERE category_id = '$category_id'";
+
+            $sta = $db->query($sql);
+
+            $publish = $sta->fetchAll();
+            echo '<pre>';
+            var_dump($publish);
+            echo '</pre>';
+            ?>
+            
+            <select name="" id="">
+                <?php foreach ($publish as $value): ?>
+                <option value="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></option>
+            <?php endforeach?>
+
+            </select>
                 <option>select Category</option>
             </select>
             <button type="submit" class="btn btn-primary" name="add_product">Add</button>
