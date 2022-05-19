@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <a href="index.php" class="btn btn-primary">GO Back to Products </a>
     </p>
       <!-- categories -->
-      <h1>Update Category <?php echo $name ?></h1>
+      <h1>Update SubCategory <?php echo $name ?></h1>
       <?php if (!empty($errors)): ?>
 
             <div class="alert alert-danger">
