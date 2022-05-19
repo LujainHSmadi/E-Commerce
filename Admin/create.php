@@ -23,8 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $image = $_FILES['image'] ?? null;
         $imagePath = '';
         if ($image) {
-            $imagePath = 'images/' . randomString(8) . '/' . $image['name'];
-            mkdir(dirname($imagePath));
+            $imagePath = 'images/' . $image['name'];
+            // mkdir(dirname($imagePath));
             move_uploaded_file($image['tmp_name'], $imagePath);
         }
 
@@ -84,7 +84,7 @@ function randomString($n)
             <div class="custom-file">
                     <br>
                     <input type="file" class="custom-file-input" id="customFile" name="image">
-                    <label class="custom-file-label" for="customFile">Choose file</label>
+                    <label class="form-control-file" for="customFile">Choose file</label>
                 </div>
 
                 <div class="form-group">

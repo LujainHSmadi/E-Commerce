@@ -1,49 +1,67 @@
 <?php
 @include 'connect.php';
-$errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $cat_name = $_GET['cat_name'];
-    $cat_desc = $_GET['cat_desc'];
-
-    if (empty($cat_name)) {
-        $errors[] = 'Product title is required';
-
-    }
-    if (empty($cat_desc)) {
-        $errors[] = 'Description is required';
-
-    }
-    if (!is_dir('images')) {
-        mkdir('images');
-    }
-    if (empty($errors)) {
-        $image = $_FILES['image'] ?? null;
-        $imagePath = '';
-        if ($image) {
-            $imagePath = 'images/' . randomString(8) . '/' . $image['name'];
-            mkdir(dirname($imagePath));
-            move_uploaded_file($image['tmp_name'], $imagePath);
-        }
-
-        $query = "SELECT * FROM `category`; ";
-
-        $statment = $conn->prepare($query);
-        $statment->execute();
-
-        header('Location:index.php');
-    }
+$id = $_GET['id'] ?? null;
+if (!$id) {
+    header('Location: index.php');
+    exit;
 }
 
-function randomString($n)
-{
-    $str = '';
-    $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    for ($i = 0; $i < $n; $i++) {
-        $index = rand(0, strlen($characters) - 1);
-        $str .= $characters[$index];
+$query = "SELECT * FROM `category` WHERE category_id = :id";
+
+$statment = $conn->prepare($query);
+$statment->bindValue(':id', $id);
+$statment->execute();
+$category = $statment->fetch(PDO::FETCH_ASSOC);
+
+
+$errors=[];
+
+$name=$category['category_name'];
+// $desc=$category['category_des'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$cat_name = $_POST['cat_name'];
+$cat_desc = $_POST['cat_desc'];
+
+
+if (empty($cat_name)) {
+    $errors[] = 'Product title is required';
+
+}
+if (empty($cat_desc)) {
+    $errors[] = 'Description is required';
+
+}
+if (!is_dir('images')) {
+    mkdir('images');
+}
+if (empty($errors)) {
+    $image = $_FILES['image'] ?? null;
+    $imagePath = '';
+
+    if($category['category_name']){
+      unlink ( 'images/'.$category['category_name']);
     }
-    return $str;
+
+    if ($image) {
+        $imagePath = 'images/' . $image['name'];
+        // mkdir(dirname($imagePath));
+        move_uploaded_file($image['tmp_name'], $imagePath);
+    }
+
+    $query = "UPDATE  `category` SET  `category_name`=:name, `category_img` =:image , `category_des` = :desc";
+
+    $statment = $conn->prepare($query);
+    $statment->bindValue(':name', $cat_name);
+    $statment->bindValue(':image', $imagePath);
+    $statment->bindValue(':desc', $cat_desc);
+    $statment->execute();
+
+    header('Location:index.php');
+}
+
+
+
 }
 
 ?>
@@ -62,32 +80,41 @@ function randomString($n)
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
+    <p>
+      <a href="index.php" class="btn btn-primary">GO Back to Products </a>
+    </p>
       <!-- categories -->
-      <h1>Update Category</h1>
+      <h1>Update Category <?php echo $name ?></h1>
       <?php if (!empty($errors)): ?>
 
             <div class="alert alert-danger">
                 <?php foreach ($errors as $error): ?>
                     <div><?php echo $error ?></div>
-                    <?php endforeach?>
+                <?php endforeach;?>
             </div>
            <?php endif?>
       <br>
-      <form action="index.php" method="GET" enctype="multipart/form-data">
-            <input class="form-control" type="text" placeholder="Add Categorry" name="cat_name" $>
+      <form action="index.php" method="POST" enctype="multipart/form-data">
+
+          <?php if ($category['category_img']): ?>
+            <img src = "<?php echo $category['category_img'] ?>" width=100px height=100px >
+            <?php endif;?>
+
+
+            <input class="form-control" type="text" placeholder="Add Categorry" name="cat_name" value = "<?php echo $category['category_name'] ?>">
             <br>
             <div class="custom-file">
                     <br>
-                    <input type="file" class="custom-file-input" id="customFile" name="image">
-                    <label class="custom-file-label" for="customFile">Choose file</label>
+                    <input type="file" class="form-control-file" id="customFile" name="image" value = "<?php echo $category['category_img'] ?>">
+
                 </div>
 
                 <div class="form-group">
                 <br>
                 <label for="exampleFormControlTextarea1">Description </label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="cat_desc" ></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="cat_desc" ><?php echo $category['category_des'] ?></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" name="add_product">Add</button>
+            <button type="submit" class="btn btn-primary" name="add_product">update</button>
             <br><br>
             <select class="form-control">
                 <option>select Category</option>

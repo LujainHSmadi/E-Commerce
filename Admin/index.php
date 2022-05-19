@@ -18,7 +18,11 @@ $categories = $satement->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
+      <h1>Product CRUD</h1>
       <table class="table">
+          <p>
+         <a href="create.php" class="btn btn-success">GO Back to Products </a>
+       </p>
           <thead>
               <tr>
                   <th scope ="col">#</th>
@@ -35,7 +39,10 @@ $categories = $satement->fetchAll(PDO::FETCH_ASSOC);
                   <td><?php echo $category["category_name"] ?></td>
                   <td><?php echo $category["category_des"] ?></td>
                   <td> <a class="btn btn-outline-primary" href="update.php?id=<?php echo $category['category_id'] ?>">Edit</a>
-                       <a class="btn btn-outline-danger" href="delete?=<?php echo $category['category_id'] ?>" >Delete</a> </td>
+                  <form style ="display:inline-block" action="delete.php" method="post">
+                      <input type="hidden" name="id" value="<?php echo $category['category_id'] ?>">
+                      <button type="submit" class="btn btn-outline-danger" href="delete?=<?php echo $category['category_id'] ?>" >Delete</button> </td>
+                  </form>     
 
 
               </tr>
