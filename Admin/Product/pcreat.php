@@ -4,15 +4,16 @@
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $cat_name = $_POST['cat_name'];
-    $cat_desc = $_POST['cat_desc'];
+    $subcategory_name = $_POST['subcategory_name'];
+    $subcategory_img = $_POST['subcategory_img'];
+    $subcategory_des = $_POST['subcategory_des'];
+    $category_id = $_POST['category_id'];
 
-    
-    if (empty($cat_name)) {
+    if (empty($subcategory_name)) {
         $errors[] = 'Product title is required';
 
     }
-    if (empty($cat_desc)) {
+    if (empty($subcategory_des)) {
         $errors[] = 'Description is required';
 
     }
@@ -28,13 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             move_uploaded_file($image['tmp_name'], $imagePath);
         }
 
-        $query = "INSERT INTO `category` (`category_id`, `category_name`, `category_img`, `category_des`)
-    VALUES (NULL, :name, :image, :desc)";
+        $query = "INSERT INTO `subcategory` (`subcategory_id`, `subcategory_name`, `subcategory_img`, `subcategory_des`, `category_id`)
+        VALUES (NULL, :name, :image, :des,:cat_id)";
 
         $statment = $conn->prepare($query);
-        $statment->bindValue(':name', $cat_name);
+        $statment->bindValue(':name', $subcategory_name);
         $statment->bindValue(':image', $imagePath);
-        $statment->bindValue(':desc', $cat_desc);
+        $statment->bindValue(':des', $subcategory_des);
+        $statment->bindValue(':cat_id', $category_id);
         $statment->execute();
 
         header('Location:index.php');
@@ -79,7 +81,7 @@ function randomString($n)
            <?php endif?>
       <br>
       <form action="create.php" method="post" enctype="multipart/form-data">
-            <input class="form-control" type="text" placeholder="Add Categorry" name="cat_name" ">
+            <input class="form-control" type="text" placeholder="Add Categorry" name="subcategory_name" ">
             <br>
             <div class="custom-file">
                     <br>
@@ -89,13 +91,14 @@ function randomString($n)
                 <div class="form-group">
                 <br>
                 <label for="exampleFormControlTextarea1">Description </label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="cat_desc" ></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="subcategory_des" ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" name="add_product">Add</button>
-            <br><br>
             <select class="form-control">
                 <option>select Category</option>
             </select>
+            <button type="submit" class="btn btn-primary" name="add_product">Add</button>
+            <br><br>
+            
       <form>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

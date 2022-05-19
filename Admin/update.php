@@ -1,11 +1,13 @@
 <?php
-@include 'connect.php';
+@include 'includes/connect.php';
 
 $id = $_GET['id'] ?? null;
 if (!$id) {
     header('Location: index.php');
     exit;
 }
+
+
 
 $query = "SELECT * FROM `category` WHERE category_id = :id";
 
@@ -15,15 +17,23 @@ $statment->execute();
 $category = $statment->fetch(PDO::FETCH_ASSOC);
 
 
+
+
 $errors=[];
 
 $name=$category['category_name'];
+// $image = $category['category_img'];
 // $desc=$category['category_des'];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
 $cat_name = $_POST['cat_name'];
 $cat_desc = $_POST['cat_desc'];
-
-
+$image = $_FILES['image'] ?? null;
+        $imagePath = '';
+if (!is_dir('images')) {
+    mkdir('images');
+}
 if (empty($cat_name)) {
     $errors[] = 'Product title is required';
 
@@ -32,35 +42,36 @@ if (empty($cat_desc)) {
     $errors[] = 'Description is required';
 
 }
-if (!is_dir('images')) {
-    mkdir('images');
-}
-if (empty($errors)) {
-    $image = $_FILES['image'] ?? null;
-    $imagePath = '';
 
-    if($category['category_name']){
-      unlink ( 'images/'.$category['category_name']);
-    }
+  
+ if ($image) {
+      
+        if ($category['category_img']) {
+          unlink($category['category_img']);
 
-    if ($image) {
-        $imagePath = 'images/' . $image['name'];
-        // mkdir(dirname($imagePath));
-        move_uploaded_file($image['tmp_name'], $imagePath);
-    }
+        }
+         $imagePath = 'images/' . $image['name'];
+         move_uploaded_file($image['tmp_name'], $imagePath);
 
-    $query = "UPDATE  `category` SET  `category_name`=:name, `category_img` =:image , `category_des` = :desc";
+if(empty($errors)){
+    $query = "UPDATE `category` 
+    SET `category_name`=:name,
+    `category_img`= :image,
+    `category_des`= :desc
+    WHERE `category_id` = :id";
 
     $statment = $conn->prepare($query);
     $statment->bindValue(':name', $cat_name);
     $statment->bindValue(':image', $imagePath);
     $statment->bindValue(':desc', $cat_desc);
+    $statment->bindValue(':id', $id);
     $statment->execute();
 
     header('Location:index.php');
+    echo "helllo";
 }
 
-
+ }
 
 }
 
@@ -94,7 +105,7 @@ if (empty($errors)) {
             </div>
            <?php endif?>
       <br>
-      <form action="index.php" method="POST" enctype="multipart/form-data">
+      <form action="" method="POST" enctype="multipart/form-data">
 
           <?php if ($category['category_img']): ?>
             <img src = "<?php echo $category['category_img'] ?>" width=100px height=100px >

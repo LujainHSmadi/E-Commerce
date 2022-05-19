@@ -1,5 +1,6 @@
 <?php
-@include 'connect.php';
+@include 'includes/connect.php';
+;
 $id = $_POST['id'] ?? null;
 if(!$id){
     header('Location: index.php');

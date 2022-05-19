@@ -1,5 +1,5 @@
 <?php
-@include_once "connect.php";
+@include 'includes/connect.php';
 $satement = $conn->prepare('SELECT * FROM `category` ORDER BY category_id DESC');
 $satement->execute();
 $categories = $satement->fetchAll(PDO::FETCH_ASSOC);
@@ -29,6 +29,7 @@ $categories = $satement->fetchAll(PDO::FETCH_ASSOC);
                   <th scope ="col">Image</th>
                   <th scope ="col">name</th>
                   <th scope ="col">Description</th>
+                  <th scope ="col">Action</th>
               </tr>
           </thead>
           <tbody>
