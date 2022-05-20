@@ -134,12 +134,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <?php
 
-$sql = "SELECT * FROM `subcategory`";
+                    $sql = "SELECT * FROM `subcategory`";
 
-$sta = $conn->prepare($sql);
-$sta->execute();
-$publish = $sta->fetchAll();
-?>
+                    $sta = $conn->prepare($sql);
+                    $sta->execute();
+                    $publish = $sta->fetchAll();
+                ?>
 
             <select name="subcategoryid" require>
                 <option value="no">select subcategory</option>
