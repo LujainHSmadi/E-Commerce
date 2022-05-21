@@ -108,9 +108,10 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.php">Login</a>
+                        <a class="collapse-item" href="cat_index.php">Categories</a>
+                        <a class="collapse-item" href="subcat_index.php">Sub-categories</a>
+                        <a class="collapse-item" href="product_index.php">Products</a>
                         <a class="collapse-item" href="register.php">Admin profile</a>
-                        <a class="collapse-item" href="register.php">Register</a>
                         <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Other Pages:</h6>

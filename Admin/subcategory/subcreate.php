@@ -98,19 +98,19 @@ function randomString($n)
 
               <?php
 
-$sql = "SELECT * FROM `category`";
+                $sql = "SELECT * FROM `category`";
 
-$sta = $conn->prepare($sql);
-$sta->execute();
-$publish = $sta->fetchAll();
+                $sta = $conn->prepare($sql);
+                $sta->execute();
+                $publish = $sta->fetchAll();
 
-?>
+                ?>
 
             <select name="categoryid" require>
                 <option value="no">select Category</option>
                 <?php foreach ($publish as $value): ?>
                 <option value="<?php echo $value['category_id']; ?>"><?php echo $value['category_name']; ?></option>
-            <?php endforeach?>
+            ````<?php endforeach?>
                 </select>
 
              <br><br>
