@@ -117,15 +117,15 @@ $info = $statement->fetchALL(PDO::FETCH_ASSOC);
                                             <td><?php echo $val['city'] ?></td>
                                             <td><?php echo $val['phone'] ?></td>
                                             <td>
-                                                <form action="regupdate.php" method="post">
-                                                   <input type="hidden" name="edit_id" value="<?php echo $val['admin_id']; ?>">
-                                                   <button type="submit" class="btn btn-success" name="edit_btn">Edit</button>
+                                                <form action="user_update.php" method="post">
+                                                   <input type="hidden" name="edit_id" value="<?php echo $val['user_id']; ?>">
+                                                   <button type="submit" class="btn btn-success" name="edit_user">Edit</button>
                                                 </form>
                                             </td>
                                             <td>
-                                                <form action="regdelete.php" method="get">
+                                                <form action="user_delete.php" method="get">
 
-                                                    <button type="submit" class="btn btn-danger" name="delete_btn" value="<?php echo $val['admin_id']; ?>" >Delete</button>
+                                                    <button type="submit" class="btn btn-danger" name="delete_user" value="<?php echo $val['user_id']; ?>" >Delete</button>
                                                 </form>
 
                                             </td>

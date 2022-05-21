@@ -5,7 +5,7 @@ include_once "include/connect.php";
 include_once "include/navbar.php";
 $id = $_POST['edit_id'];
 
-if (isset($_POST['edit_cat'])) {
+if (isset($_POST['edit_subcat'])) {
     $id = $_POST['edit_id'];
     $query = "SELECT * FROM `subcategory` WHERE `subcategory_id`= $id";
     $statement = $conn->prepare($query);
@@ -30,7 +30,7 @@ if (isset($_POST['edit_cat'])) {
                 <div class="form-group">
                     <label for="subcategory_name" >
                         subcategory Name
-                        <input type="text" name="subcategory_name" class="form-control" placeholder = "Enter Username" value="<?php echo $info['subcategory_name'] ?>">
+                        <input type="text" name="subcategory_name" class="form-control" placeholder = "Subcategory name" value="<?php echo $info['subcategory_name'] ?>">
                     </label>
                 </div>
                 <div class="form-group">
@@ -41,13 +41,13 @@ if (isset($_POST['edit_cat'])) {
                 <div class="form-group">
 
                        <?php
-$sql = "SELECT * FROM `category`";
+                        $sql = "SELECT * FROM `category`";
 
-$sta = $conn->prepare($sql);
-$sta->execute();
-$publish = $sta->fetchAll();
+                        $sta = $conn->prepare($sql);
+                        $sta->execute();
+                        $publish = $sta->fetchAll();
 
-?>
+                        ?>
 
                          <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -67,7 +67,9 @@ $publish = $sta->fetchAll();
                 <div class="form-group">
                     <label for="Discription">
                         Discription
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="subcategory_des" ><?php echo $info['subcategory_des'] ?></textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="subcategory_des" >
+                            <?php echo $info['subcategory_des'] ?>
+                        </textarea>
                     </label>
                 </div>
 

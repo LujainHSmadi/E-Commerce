@@ -30,13 +30,13 @@ if (isset($_POST['edit_product'])) {
                 <div class="form-group">
                     <label for="product_name" >
                         Product Name
-                        <input type="text" name="product_name" class="form-control" placeholder = "Enter Username" value="<?php echo $info['product_name'] ?>">
+                        <input type="text" name="product_name" class="form-control" placeholder = "product name" value="<?php echo $info['product_name'] ?>">
                     </label>
                 </div>
                 <div class="form-group">
                     <label for="product_name" >
                         Product Price
-                        <input type="text" name="product_price" class="form-control" placeholder = "Enter Username" value="<?php echo $info['product_price'] ?>">
+                        <input type="text" name="product_price" class="form-control" placeholder = "product price" value="<?php echo $info['product_price'] ?>">
                     </label>
                 </div>
                 <div class="form-group">

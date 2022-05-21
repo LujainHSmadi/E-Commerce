@@ -28,7 +28,7 @@ $categories = $satement->fetchAll(PDO::FETCH_ASSOC);
           <div class="form-group">
               <label for="category_name" >
                   Category Name
-                  <input type="text" name="cat_name" class="form-control" placeholder = "Enter Username">
+                  <input type="text" name="cat_name" class="form-control" placeholder = "Category name">
               </label>
           </div>
           <div class="form-group">
@@ -62,23 +62,23 @@ $categories = $satement->fetchAll(PDO::FETCH_ASSOC);
                                 </button >
                         </div>
                         <div class="card-body">
-                           <?php
-if (isset($_SESSION['success']) && $_SESSION['success'] != '') {
-    echo "<div class='alert alert-primary' role='alert'>" . $_SESSION['success'] . "</div>";
-    unset($_SESSION['success']);
-}
-if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
-    echo "<div class='alert alert-warning' role='alert'>" . $_SESSION['status'] . "</div>";
-    unset($_SESSION['status']);
-}
-?>
+                        <?php
+                        if (isset($_SESSION['success']) && $_SESSION['success'] != '') {
+                            echo "<div class='alert alert-primary' role='alert'>" . $_SESSION['success'] . "</div>";
+                            unset($_SESSION['success']);
+                        }
+                        if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
+                            echo "<div class='alert alert-warning' role='alert'>" . $_SESSION['status'] . "</div>";
+                            unset($_SESSION['status']);
+                        }
+                        ?>
                             <div class="table-responsive">
                                 <?php
-$query = "SELECT * FROM admin";
-$statement = $conn->prepare($query);
-$statement->execute();
-$info = $statement->fetchALL(PDO::FETCH_ASSOC);
-?>
+                                $query = "SELECT * FROM admin";
+                                $statement = $conn->prepare($query);
+                                $statement->execute();
+                                $info = $statement->fetchALL(PDO::FETCH_ASSOC);
+                                ?>
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>

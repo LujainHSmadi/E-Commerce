@@ -29,7 +29,7 @@ $sub_categories = $satement->fetchAll(PDO::FETCH_ASSOC);
           <div class="form-group">
               <label for="category_name" >
                   Sub-Category Name
-                  <input type="text" name="subcategory_name" class="form-control" placeholder = "Enter Username">
+                  <input type="text" name="subcategory_name" class="form-control" placeholder = "Subcategory name">
               </label>
           </div>
           <div class="form-group">
@@ -89,16 +89,16 @@ $publish = $sta->fetchAll();
             </button >
     </div>
     <div class="card-body">
-                                        <?php
-if (isset($_SESSION['success']) && $_SESSION['success'] != '') {
-    echo "<div class='alert alert-primary' role='alert'>" . $_SESSION['success'] . "</div>";
-    unset($_SESSION['success']);
-}
-if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
-    echo "<div class='alert alert-warning' role='alert'>" . $_SESSION['status'] . "</div>";
-    unset($_SESSION['status']);
-}
-?>
+                    <?php
+            if (isset($_SESSION['success']) && $_SESSION['success'] != '') {
+                echo "<div class='alert alert-primary' role='alert'>" . $_SESSION['success'] . "</div>";
+                unset($_SESSION['success']);
+            }
+            if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
+                echo "<div class='alert alert-warning' role='alert'>" . $_SESSION['status'] . "</div>";
+                unset($_SESSION['status']);
+            }
+            ?>
         <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -125,7 +125,7 @@ if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
 
                                         <form action="subcat_update.php" method="post" enctype="multipart/form-data">
                                             <input type="hidden" name="edit_id" value="<?php echo $sub_category['subcategory_id']; ?>">
-                                            <button type="submit" class="btn btn-success" name="edit_cat">Edit</button>
+                                            <button type="submit" class="btn btn-success" name="edit_subcat">Edit</button>
                                         </form>
                                     </td>
                                     <td>

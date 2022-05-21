@@ -10,18 +10,6 @@ if (isset($_POST["registeration"])) {
     $password = $_POST['password'];
     $cpassword = $_POST['confirmpassword'];
 
-    if (!is_dir('images')) {
-        mkdir('images');
-    }
-
-    $image = $_FILES['image'] ?? null;
-    $imagePath = '';
-    if ($image) {
-        $imagePath = 'images/' . $image['name'];
-        // mkdir(dirname($imagePath));
-        move_uploaded_file($image['tmp_name'], $imagePath);
-    }
-
     if ($password === $cpassword) {
         $query = "INSERT INTO `admin`(`admin_id`, `admin_name`,  `admin_email`, `admin_password`, `admin_date`)
     VALUES (NULL,:username,:email,:password, NOW()) ";
@@ -35,11 +23,11 @@ if (isset($_POST["registeration"])) {
         $state = true;
         if ($state) {
             echo "MATCH";
-            $_SESSION['success'] = "Admin Profile added";
+            $_SESSION['success'] = "Admin Profile has been added";
             header("Location: register.php");
 
         } else {
-            $_SESSION['status'] = "Admin Profile NOT Added";
+            $_SESSION['status'] = "Admin Profile Hasn't Added";
             header("Location: register.php");
 
         }
@@ -75,11 +63,11 @@ if (isset($_POST['edit_username'])) {
     $state = true;
     if ($state) {
         echo "MATCH";
-        $_SESSION['success'] = "Admin Profile updated";
+        $_SESSION['success'] = "Admin Profile Has Been Modified!";
         header("Location: register.php");
 
     } else {
-        $_SESSION['status'] = "Admin Profile NOT updated";
+        $_SESSION['status'] = "Admin Profile Has Been Modified!";
         header("Location: register.php");
 
     }
@@ -154,9 +142,24 @@ if (isset($_POST['add_category'])) {
             $statment->bindValue(':desc', $cat_desc);
             $statment->execute();
 
-            header("Location:cat_index.php");
+            $state = true;
+            if ($state) {
+                echo "MATCH";
+                $_SESSION['success'] = "Category Has Been Modified!";
+                header("Location: cat_index.php");
+
+            } else {
+                $_SESSION['status'] = "Category Has Been Modified!";
+                header("Location: cat_index.php");
+
+            }
+
+        } else {
+            $_SESSION['status'] = "PASSWORD and CONFIRM PASSWORD DOES NOT MATCH";
+            header("Location: cat_index.php");
 
         }
+
     }
 
 }
@@ -237,9 +240,24 @@ if (isset($_POST['edit_category'])) {
                 $statment->bindValue(':id', $id);
                 $statment->execute();
 
-                header('Location:cat_index.php');
-// echo "helllo";
+                $state = true;
+                if ($state) {
+                    echo "MATCH";
+                    $_SESSION['success'] = "Category Has Been Modified!";
+                    header("Location: cat_index.php");
+
+                } else {
+                    $_SESSION['status'] = "Category Hasn't Been Modified!";
+                    header("Location: cat_index.php");
+
+                }
+
+            } else {
+                $_SESSION['status'] = "PASSWORD and CONFIRM PASSWORD DOES NOT MATCH";
+                header("Location: cat_index.php");
+
             }
+// echo "helllo";
 
         }
 
@@ -252,7 +270,7 @@ if (isset($_POST['edit_subcategory'])) {
     $id = $_GET['id'] ?? null;
 
     if (!$id) {
-        header('Location: index.php');
+        header('Location: subcat_index.php');
         exit;
     }
 
@@ -286,35 +304,46 @@ if (isset($_POST['edit_subcategory'])) {
         $errors[] = 'category is required';
 
     }
-    echo '<pre>';
-    var_dump($errors);
-    echo '</pre>';
+
     if ($image) {
 
         $imagePath = 'images/' . $image['name'];
         move_uploaded_file($image['tmp_name'], $imagePath);
 
         if (empty($errors)) {
-            echo " 4444";
+
             $query = "UPDATE `subcategory`
-    SET `subcategory_name`=:name,
-    `subcategory_img`= :image,
-    `subcategory_des`= :desc,
-    `category_id` = :category
-    WHERE `subcategory_id` = :id";
+                SET `subcategory_name`=:name,
+                `subcategory_img`= :image,
+                `subcategory_des`= :desc,
+                `category_id` = :category
+                WHERE `subcategory_id` = :id";
 
             $statment = $conn->prepare($query);
-            $statment->bindValue(':name', $subcat_name);
+            $statment->bindValue(':name', $subcategory_name);
             $statment->bindValue(':image', $imagePath);
-            $statment->bindValue(':desc', $subcat_desc);
+            $statment->bindValue(':desc', $subcategory_des);
             $statment->bindValue(':category', $category_id);
             $statment->bindValue(':id', $id);
             $statment->execute();
 
-            header('Location:subcat_index.php');
-            echo "helllo";
-        }
+            $state = true;
+            if ($state) {
+                echo "MATCH";
+                $_SESSION['success'] = "Subcategory Has Been Modified!";
+                header('Location: subcat_index.php');
 
+            } else {
+                $_SESSION['status'] = "Subcategory Hasn't Been Modified!";
+                header('Location: subcat_index.php');
+
+            }
+
+        } else {
+            $_SESSION['status'] = "PASSWORD and CONFIRM PASSWORD DOES NOT MATCH";
+            header('Location: subcat_index.php');
+
+        }
     }
 
 }
@@ -359,10 +388,24 @@ if (isset($_POST['add_subcategory'])) {
         $statment->bindValue(':cat_id', $category_id);
         $statment->execute();
 
-        header('Location:subcat_index.php');
-    }
+        $state = true;
+        if ($state) {
+            echo "MATCH";
+            $_SESSION['success'] = "Subcategory Has Been Added!";
+            header('Location: subcat_index.php');
 
-}
+        } else {
+            $_SESSION['status'] = "Subcategory Has NOT Been Added";
+            header('Location: subcat_index.php');
+
+        }
+
+    } else {
+        $_SESSION['status'] = "PASSWORD and CONFIRM PASSWORD DOES NOT MATCH";
+        header('Location: subcat_index.php');
+
+    }}
+
 //***************************ADD Product************************************* */
 
 if (isset($_POST['add_product'])) {
@@ -405,7 +448,22 @@ if (isset($_POST['add_product'])) {
         $statment->bindValue(':sub_id', $subcategory_id);
         $statment->execute();
 
-        header('Location:product_index.php');
+        $state = true;
+        if ($state) {
+            echo "MATCH";
+            $_SESSION['success'] = "Product Has Beenadded";
+            header('Location: product_index.php');
+
+        } else {
+            $_SESSION['status'] = "Product Has NOT Been Added";
+            header('Location: product_index.php');
+
+        }
+
+    } else {
+        $_SESSION['status'] = "PASSWORD and CONFIRM PASSWORD DOES NOT MATCH";
+        header('Location: product_index.php');
+
     }
 
 }
@@ -416,7 +474,7 @@ if (isset($_POST['edit_product'])) {
     $id = $_GET['id'] ?? null;
 
     if (!$id) {
-        header('Location: index.php');
+        header('Location: product_index.php');
         exit;
     }
 
@@ -454,9 +512,7 @@ if (isset($_POST['edit_product'])) {
         $errors[] = 'category is required';
 
     }
-    echo '<pre>';
-    var_dump($errors);
-    echo '</pre>';
+
     if ($image) {
 
         $imagePath = 'images/' . $image['name'];
@@ -480,14 +536,27 @@ if (isset($_POST['edit_product'])) {
             $statment->bindValue(':sub_id', $subcategory_id);
             $statment->bindValue(':id', $id);
             $statment->execute();
+            $state = true;
+            if ($state) {
+                echo "MATCH";
+                $_SESSION['success'] = "Product Has Been Modified!!";
+                header('Location: product_index.php');
 
-            header('Location:product_index.php');
-            echo "helllo";
+            } else {
+                $_SESSION['status'] = "Product Has Been Modified!!";
+                header('Location: product_index.php');
+
+            }
+
+        } else {
+            $_SESSION['status'] = "PASSWORD and CONFIRM PASSWORD DOES NOT MATCH";
+            header('Location: product_index.php');
+
         }
-
     }
 
 }
+
 //*******************user creation **************************/
 
 $state = false;
@@ -552,13 +621,83 @@ header("Location: user_index.php");
 
     $state = true;
     if ($state) {
-        $_SESSION['success'] = "User Profile Added";
+        $_SESSION['success'] = "User Profile Has Been Added";
         header("Location: user_index.php");
 
     } else {
-        $_SESSION['status'] = "User Profile NOT Added";
+        $_SESSION['status'] = "User Profile Has NOT Been  Added";
         header("Location: user_index.php");
 
     }
+
+}
+//*******************user update **************************/
+if (isset($_POST['user_update'])) {
+    $state = false;
+    $id = $_GET['id'];
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $address = $_POST['address'];
+    $city = $_POST['city'];
+    $phone = $_POST['phone'];
+
+    if (empty($password)) {
+        $errors[] = 'password title is required';
+
+    }
+    if (empty($email)) {
+        $errors[] = 'email is required';
+
+    }
+    if (empty($username)) {
+        $errors[] = 'username is required';
+
+    }
+    if (empty($phone)) {
+        $errors[] = 'phone is required';
+
+    }
+    if (empty($address)) {
+        $errors[] = 'address is required';
+
+    }
+    if (empty($city)) {
+        $errors[] = 'city is required';
+
+    }
+
+    $query = "UPDATE `user`
+        SET
+        `password`=:password,
+        `email`=:email,
+        `address`=:address,
+        `city`=:city,
+        `phone`=:phone,
+        `username`= :username
+         WHERE `user_id` = :id";
+
+    $statment = $conn->prepare($query);
+    $statment->bindValue(':password', $password);
+    $statment->bindValue(':email', $email);
+    $statment->bindValue(':address', $address);
+    $statment->bindValue(':city', $city);
+    $statment->bindValue(':phone', $phone);
+    $statment->bindValue(':username', $username);
+    $statment->bindValue(':id', $id);
+    $statment->execute();
+
+    $state = true;
+    if ($state) {
+        $_SESSION['success'] = "User Profile Has Been Modified!";
+        header("Location: user_index.php");
+
+    } else {
+        $_SESSION['status'] = "User Profile Has NOT Been Modified!";
+        header("Location: user_index.php");
+
+    }
+
+    header("Location: user_index.php");
 
 }

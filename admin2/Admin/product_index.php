@@ -88,9 +88,9 @@ $products = $satement->fetchAll(PDO::FETCH_ASSOC);
 <div class="container-fluid">
   <div class="card shadow mb-9">
                         <div class="card-header py-3">
-        <h5 class="mg-0 font-weight-bold text-primary">Sub-categories</h5>
+        <h5 class="mg-0 font-weight-bold text-primary">Product List</h5>
         <button type ="button" class="btn btn-primary"  data-toggle="modal" data-target="#addadminprofile">
-                Add Sub-category
+                Add Product
             </button >
     </div>
     <div class="card-body">

@@ -31,7 +31,7 @@ if (isset($_POST['edit_cat'])) {
                 <div class="form-group">
                     <label for="category_name" >
                         Category Name
-                        <input type="text" name="cat_name" class="form-control" placeholder = "Enter Username" vaue="<?php echo  $info[category_name] ?>">
+                        <input type="text" name="cat_name" class="form-control" placeholder = "Category name" vaue="<?php echo  $info[category_name] ?>">
                     </label>
                 </div>
                 <div class="form-group">
