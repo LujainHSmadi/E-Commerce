@@ -40,13 +40,13 @@ $sub_categories = $satement->fetchAll(PDO::FETCH_ASSOC);
           <div class="form-group">
 
                                                     <?php
-                              $sql = "SELECT * FROM `category`";
+$sql = "SELECT * FROM `category`";
 
-                              $sta = $conn->prepare($sql);
-                              $sta->execute();
-                              $publish = $sta->fetchAll();
+$sta = $conn->prepare($sql);
+$sta->execute();
+$publish = $sta->fetchAll();
 
-                              ?>
+?>
 
                          <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -72,7 +72,7 @@ $sub_categories = $satement->fetchAll(PDO::FETCH_ASSOC);
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a class="btn btn-secondary" data-dismiss="modal" href="subcat_index.php">Cancel</a>
         <button type="submit" class="btn btn-primary" name="add_subcategory">add</button>
       </div>
     </form>
